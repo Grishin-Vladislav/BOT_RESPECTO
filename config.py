@@ -1,8 +1,8 @@
 # MODEL SETTINGS ----
 model = 'gpt-4'
-temperature = 0.8
+temperature = 0.85
 presence_penalty = 1
-frequency_penalty = 0.35
+frequency_penalty = 1
 max_tokens = 256
 # END OF MODEL SETTINGS ----
 

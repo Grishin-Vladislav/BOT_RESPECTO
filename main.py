@@ -50,4 +50,5 @@ async def process_conversation(message: types.Message):
 
 
 if __name__ == '__main__':
+    print(os.getenv('TELEGRAM_API_KEY'), os.getenv('OPENAI_API_KEY'))
     executor.start_polling(dp, skip_updates=True)

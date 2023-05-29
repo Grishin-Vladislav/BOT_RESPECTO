@@ -27,6 +27,15 @@ async def send_welcome(message: types.Message):
     await message.answer(start_message)
 
 
+@dp.message_handler(commands=['kill'])
+async def kill_character(message: types.Message):
+    if conversations.get(message.chat.id):
+        del conversations[message.chat.id]
+        await message.answer('Вы его убили... ffff')
+    else:
+        await message.answer('Убивать некого\n¯\_(ツ)_/¯')
+
+
 @dp.message_handler(is_reply=True)
 async def process_conversation(message: types.Message):
     if not conversations.get(message.chat.id):

@@ -17,7 +17,7 @@ pipeline {
             ]){
                 sh 'docker stop bot_respect || true \
                 && docker rm bot_respect || true \
-                && docker run --init -d --name bot_respect -e {env.TG_API_KEY} -e {env.OPENAI_API_KEY} frodan/bot_respect'
+                && docker run -d --name bot_respect -e {env.TG_API_KEY} -e {env.OPENAI_API_KEY} frodan/bot_respect'
             }
         }
     }

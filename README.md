@@ -22,11 +22,11 @@ python3 main.py
 ### Docker (Not Ready)
 1. Fill .env file with OpenAI and Telegram API keys.
 2. Build docker image
-```
+```bash
 docker build -t bot_respect .
 ```
 3. Run image
-```
-docker run bot_respect
+```bash
+docker run -e OPENAI_API_KEY=<YOUR_OPENAI_KEY> -e TELEGRAM_API_KEY=<YOUR_TELEGRAM_KEY> bot_respect
 ```
 

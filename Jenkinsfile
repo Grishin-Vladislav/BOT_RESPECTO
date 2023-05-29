@@ -17,7 +17,7 @@ pipeline {
             ]){
                 sh 'docker stop bot_respect || true \
                 && docker rm bot_respect || true \
-                && docker run --name bot_respect -e TELEGRAM_API_KEY={env.TG_API_KEY} -e OPENAI_API_KEY={env.OPENAI_API_KEY} frodan/bot_respect'
+                && docker run --name bot_respect -e TELEGRAM_API_KEY=${env.TG_API_KEY} -e OPENAI_API_KEY=${env.OPENAI_API_KEY} frodan/bot_respect'
             }
         }
     }

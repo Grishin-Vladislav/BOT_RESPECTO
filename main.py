@@ -16,7 +16,6 @@ API_TOKEN = os.getenv('TELEGRAM_API_KEY')
 logging.basicConfig(level=logging.INFO)
 
 # Initialize bot and dispatcher
-print(os.getenv('TELEGRAM_API_KEY'), os.getenv('OPENAI_API_KEY'))
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 

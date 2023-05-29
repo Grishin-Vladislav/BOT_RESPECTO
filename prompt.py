@@ -10,7 +10,7 @@ load_dotenv(find_dotenv())
 
 
 class PromptFactory:
-    openai.api_key = os.getenv('OPENAI_TOKEN')
+    openai.api_key = os.getenv('OPENAI_API_KEY')
     model = model
     temperature = temperature
     presence_penalty = presence_penalty

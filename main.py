@@ -10,7 +10,7 @@ from character import Character
 
 load_dotenv(find_dotenv())
 
-API_TOKEN = os.getenv('API_TOKEN')
+API_TOKEN = os.getenv('TELEGRAM_API_KEY')
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

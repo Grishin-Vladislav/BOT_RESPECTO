@@ -14,6 +14,8 @@ class Character:
         self.memory.append({
             'role': role, 'content': message_text
         })
+        if len(self.memory) > 10:
+            del self.memory[1:3]
 
     def generate_response(self, message_text: str):
         self.__add_to_memory('user', message_text)

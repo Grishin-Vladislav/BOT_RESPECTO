@@ -3,20 +3,6 @@ properties([pipelineTriggers([githubPush()])])
 pipeline {
   agent any
   stages {
-    stage('Checkout SCM') {
-            steps {
-                checkout([
-                 $class: 'GitSCM',
-                 branches: [[name: 'ci-cd']],
-                 userRemoteConfigs: [[
-                    url: 'git@github.com:frodan/BOT_RESPECTO.git',
-                    credentialsId: '',
-                 ]]
-                ])
-            }
-        }
-
-
     stage('Docker Build') {
       agent any
       steps {

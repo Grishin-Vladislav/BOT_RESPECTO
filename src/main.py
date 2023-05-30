@@ -4,7 +4,7 @@ import os
 from aiogram import Bot, Dispatcher, executor, types
 from dotenv import load_dotenv, find_dotenv
 
-from config import START_MSG, WIN_MSG, LOSE_MSG
+from config import START_MSG, WIN_MSG, LOSE_MSG, WHITELIST
 from chat import ChatHandler
 
 load_dotenv(find_dotenv())
@@ -21,12 +21,19 @@ dp = Dispatcher(bot)
 chat = ChatHandler(OPENAI_API_KEY)
 
 
-@dp.message_handler(commands=['start'])
+@dp.message_handler(commands=['start'], chat_id=WHITELIST)
 async def send_welcome(message: types.Message):
     await message.answer(START_MSG)
 
 
-@dp.message_handler(commands=['kill'])
+@dp.message_handler(commands=['start'])
+async def send_welcome(message: types.Message):
+    await message.answer(f'You are not in white list\n\n'
+                         f'User_id: {message.from_user.id}\n'
+                         f'Chat_id: {message.chat.id}')
+
+
+@dp.message_handler(commands=['kill'], chat_id=WHITELIST)
 async def kill_character(message: types.Message):
     if chat.get_character(message.chat.id):
         chat.remove_conversation(message.chat.id)
@@ -35,7 +42,9 @@ async def kill_character(message: types.Message):
         await message.answer('Убивать некого\n¯\_(ツ)_/¯')
 
 
-@dp.message_handler(is_reply=True)
+@dp.message_handler(
+    lambda msg: msg.reply_to_message.from_user.id == bot.id,
+    chat_id=WHITELIST, is_reply=True)
 async def process_conversation(message: types.Message):
     chat.add_conversation(message.chat.id)
     character = chat.get_character(message.chat.id)

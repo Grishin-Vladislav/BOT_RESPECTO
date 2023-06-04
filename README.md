@@ -17,7 +17,7 @@ python main.py
 ```bash
 cd Documents/GitHub/BOT_RESPECTO
 source env/bin/activate
-python3 main.py
+python3 src/main.py
 ```
 ### Docker (Not Ready)
 1. Fill .env file with OpenAI and Telegram API keys.

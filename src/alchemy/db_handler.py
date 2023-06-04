@@ -3,12 +3,15 @@ from sqlalchemy.orm import sessionmaker
 from alchemy.models import *
 from config import *
 from datetime import datetime
-
+from sqlalchemy_utils import database_exists, create_database
 
 class DbHandler:
     def __init__(self, DSN):
         self.__engine = sqlalchemy.create_engine(DSN)
-        self.__create_tables(self.__engine)
+        if not database_exists(self.__engine.url):
+            create_database(self.__engine.url)
+            self.__create_tables(self.__engine)
+
         self.__Session = sessionmaker(bind=self.__engine)
         self.__s = None
 

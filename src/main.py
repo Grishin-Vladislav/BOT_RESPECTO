@@ -17,7 +17,10 @@ DB_ROLE = os.getenv('DB_ROLE')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_HOST = os.getenv('DB_HOST')
 DB_PORT = os.getenv('DB_PORT')
-DSN = f'postgresql://{DB_ROLE}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/respect'
+DB_NAME = os.getenv('DB_NAME')
+
+
+DSN = f'postgresql://{DB_ROLE}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

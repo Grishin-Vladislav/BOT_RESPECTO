@@ -44,6 +44,8 @@ services:
     image: dpage/pgadmin4
     container_name: pgadmin4_container
     restart: always
+    depends_on:
+      - db_postgres
     ports:
       - "8000:80"
     environment:

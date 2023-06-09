@@ -1,0 +1,61 @@
+version: '3.8'
+
+volumes:
+  app-data: {}
+
+services:
+  app:
+    build: .
+    image: frodan/bot_respect:latest
+    container_name: bot_respect
+    environment:
+      - TELEGRAM_API_KEY=5827930551:AAHuWyx9BfWtDs6PxFJpOudWp9RBLDKdBGc
+      - OPENAI_API_KEY=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
+      - DB_ROLE=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=postgres_db
+      - DB_PORT=5432
+      - DB_NAME=respect
+    depends_on:
+      - db_postgres
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 100M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+        tag: "{{.ImageName}}|{{.Name}}"
+    
+  db_postgres:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    ports:
+        - "5432:5432"
+    volumes:
+        - db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    depends_on:
+      - db_postgres
+    ports:
+      - "8000:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+volumes:
+  db:
+    driver: local
+  pgadmin-data:
+    driver: local

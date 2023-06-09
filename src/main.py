@@ -46,8 +46,9 @@ async def send_welcome(message: types.Message):
 @dp.message_handler(commands=['kill'], chat_id=WHITELIST)
 async def kill_character(message: types.Message):
     if chat.get_character(message.chat.id):
+        chat.remove_conversation(message.chat.id)
         chat.remove_character(message.chat.id)
-        await message.answer('Вы его убили... ffff')
+        await message.answer('Ты убил Олега... ffff')
     else:
         await message.answer('Убивать некого\n¯\_(ツ)_/¯')
 

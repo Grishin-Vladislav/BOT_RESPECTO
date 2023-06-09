@@ -23,5 +23,5 @@ class Character:
         self.memory.append({
             'role': role, 'content': message_text
         })
-        if len(self.memory) > 10:
+        if len(self.memory) > 6:
             del self.memory[1:3]

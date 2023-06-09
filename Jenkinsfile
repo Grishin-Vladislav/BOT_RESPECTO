@@ -13,11 +13,14 @@ pipeline {
         agent any
         steps{
             withCredentials([string(credentialsId: 'TG_API_KEY', variable: 'TG_API_KEY'),
-                             string(credentialsId: 'OPENAI_API_KEY', variable: 'OPENAI_API_KEY')
+                             string(credentialsId: 'OPENAI_API_KEY', variable: 'OPENAI_API_KEY'),
+                             string(credentialsId: 'DB_ROLE', variable: 'DB_ROLE'),
+                             string(credentialsId: 'DB_PASSWORD', variable: 'DB_PASSWORD'),
+                             string(credentialsId: 'PGADMIN_DEFAULT_EMAIL', variable:'PGADMIN_DEFAULT_EMAIL'),
+                             string(credentialsId: 'PGADMIN_DEFAULT_PASSWORD', variable:'PGADMIN_DEFAULT_PASSWORD')
             ]){
-                sh "docker stop bot_respect || true \
-                && docker rm bot_respect || true \
-                && docker run -d --name bot_respect -e TELEGRAM_API_KEY=${TG_API_KEY} -e OPENAI_API_KEY=${OPENAI_API_KEY} frodan/bot_respect"
+                sh "docker-compose down || true \
+                && docker-compose up --build -d"
             }
         }
     }

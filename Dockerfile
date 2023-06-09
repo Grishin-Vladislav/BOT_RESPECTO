@@ -4,7 +4,9 @@ RUN adduser --disabled-password app --shell /bin/sh --home /usr/src/app_python -
 
 WORKDIR /usr/src/app_python
 
-COPY . .
+COPY requirements.txt .
+
+COPY src/ src/
 
 USER app
 

@@ -26,11 +26,9 @@ class DbHandler:
             self.__s.close()
 
     def record_conversation(self, chat_id):
-        server_time = datetime.now()
-        server_timezone = pytz.timezone('Etc/GMT+0')
-        target_timezone = pytz.timezone('Etc/GMT+3')
-        converted_time = server_timezone.localize(server_time).astimezone(
-            target_timezone)
+        server_time_utc = datetime.now(pytz.utc)
+        target_timezone = pytz.timezone('Europe/Moscow')
+        converted_time = server_time_utc.astimezone(target_timezone)
         conv = Conversation(date=converted_time,
                             chat_id=chat_id,
                             temperature=REPLY_TEMP,

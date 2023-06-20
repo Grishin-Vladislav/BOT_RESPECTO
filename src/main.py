@@ -1,5 +1,6 @@
 import logging
 import os
+import time
 
 from aiogram import Bot, Dispatcher, executor, types
 from dotenv import load_dotenv, find_dotenv
@@ -18,9 +19,11 @@ DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_HOST = os.getenv('DB_HOST')
 DB_PORT = os.getenv('DB_PORT')
 DB_NAME = os.getenv('DB_NAME')
-
-
 DSN = f'postgresql://{DB_ROLE}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+
+# Setting system time
+os.environ['TZ'] = 'Europe/Moscow'
+time.tzset()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

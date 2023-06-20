@@ -4,6 +4,7 @@ from alchemy.models import *
 from config import *
 from datetime import datetime
 import pytz
+from tzlocal import get_localzone
 from sqlalchemy_utils import database_exists, create_database
 
 
@@ -27,7 +28,8 @@ class DbHandler:
 
     def record_conversation(self, chat_id):
         server_time = datetime.now()
-        server_timezone = pytz.timezone('Etc/GMT+6')
+        local_tz = str(get_localzone())
+        server_timezone = pytz.timezone(local_tz)
         target_timezone = pytz.timezone('Etc/GMT+3')
         converted_time = server_timezone.localize(server_time).astimezone(
             target_timezone)

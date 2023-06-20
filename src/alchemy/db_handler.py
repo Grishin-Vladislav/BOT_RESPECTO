@@ -3,6 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from alchemy.models import *
 from config import *
 from datetime import datetime
+import pytz
 from sqlalchemy_utils import database_exists, create_database
 
 
@@ -25,7 +26,13 @@ class DbHandler:
             self.__s.close()
 
     def record_conversation(self, chat_id):
-        conv = Conversation(date=datetime.now(), chat_id=chat_id,
+        server_time = datetime.now()
+        server_timezone = pytz.timezone('Etc/GMT+6')
+        target_timezone = pytz.timezone('Etc/GMT+3')
+        converted_time = server_timezone.localize(server_time).astimezone(
+            target_timezone)
+        conv = Conversation(date=converted_time,
+                            chat_id=chat_id,
                             temperature=REPLY_TEMP,
                             presence_penalty=REPLY_PRES_PENALTY,
                             frequency_penalty=REPLY_FREQ_PENALTY,

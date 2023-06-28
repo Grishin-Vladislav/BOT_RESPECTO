@@ -1,9 +1,11 @@
+from datetime import datetime
+
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy_utils import database_exists, create_database
+
 from alchemy.models import *
 from config import *
-from datetime import datetime
-from sqlalchemy_utils import database_exists, create_database
 
 
 class DbHandler:
@@ -78,6 +80,27 @@ class DbHandler:
     def create_quoted_chat(self, chat_id: int, quota: int):
         quota = Quota(chat_id=chat_id, remaining=quota)
         self.__s.add(quota)
+        self.commit()
+
+    def reset_quota_for_all(self):
+        existing_chats = self.__s.query(Quota).all()
+
+        for chat in existing_chats:
+            if QUOTED_CHATS.get(str(chat.chat_id)):
+                chat.remaining = QUOTED_CHATS[str(chat.chat_id)]
+                self.__s.add(chat)
+
+        self.commit()
+
+    def sync_quoted_chats_with_config(self):
+        existing_chats = self.__s.query(Quota).all()
+
+        for chat in existing_chats:
+            if QUOTED_CHATS.get(str(chat.chat_id)):
+                continue
+
+            self.__s.delete(chat)
+
         self.commit()
 
     def commit(self):

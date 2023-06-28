@@ -13,7 +13,7 @@ async def daily_quota_reset(dp: dispatcher, db):
         target_time = datetime(year=current_time.year,
                                month=current_time.month,
                                day=current_time.day,
-                               hour=15,
+                               hour=00,
                                minute=00)
 
         delta = target_time - current_time

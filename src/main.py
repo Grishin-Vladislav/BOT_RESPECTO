@@ -1,6 +1,7 @@
 import logging
 import os
 import time
+import asyncio
 
 from aiogram import Bot, Dispatcher, executor, types
 from dotenv import load_dotenv, find_dotenv
@@ -9,6 +10,7 @@ from config import START_MSG, WIN_MSG, LOSE_MSG, WHITELIST
 from conversation_handler import ConversationHandler
 from alchemy.db_handler import DbHandler
 from middlewares.quota import QuotaMiddleware, quoted
+from schedule.reset_quota import daily_quota_reset
 
 load_dotenv(find_dotenv())
 
@@ -92,5 +94,8 @@ async def process_conversation(message: types.Message):
 
 if __name__ == '__main__':
     with DbHandler(DSN) as db:
+        db.sync_quoted_chats_with_config()
         dp.middleware.setup(QuotaMiddleware(db))
-        executor.start_polling(dp, skip_updates=True)
+        loop = asyncio.get_event_loop()
+        loop.create_task(daily_quota_reset(dp, db))
+        executor.start_polling(dp, loop=loop, skip_updates=True)

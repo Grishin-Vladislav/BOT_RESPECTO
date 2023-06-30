@@ -10,6 +10,7 @@ from config import START_MSG, WIN_MSG, LOSE_MSG, WHITELIST
 from conversation_handler import ConversationHandler
 from alchemy.db_handler import DbHandler
 from middlewares.quota import QuotaMiddleware, quoted
+from middlewares.symbols_limit import SymbolsCapMiddleware, symbols_cap
 from schedule.reset_quota import daily_quota_reset
 
 load_dotenv(find_dotenv())
@@ -62,6 +63,7 @@ async def kill_character(message: types.Message):
     lambda msg: msg.reply_to_message.from_user.id == bot.id,
     chat_id=WHITELIST, is_reply=True)
 @quoted
+@symbols_cap
 async def process_conversation(message: types.Message):
     if not chat.is_character_exists(message.chat.id):
         conv_id = db.record_conversation(message.chat.id)
@@ -96,6 +98,7 @@ if __name__ == '__main__':
     with DbHandler(DSN) as db:
         db.sync_quoted_chats_with_config()
         dp.middleware.setup(QuotaMiddleware(db))
+        dp.middleware.setup(SymbolsCapMiddleware())
         loop = asyncio.get_event_loop()
         loop.create_task(daily_quota_reset(dp, db))
         executor.start_polling(dp, loop=loop, skip_updates=True)

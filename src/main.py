@@ -81,7 +81,7 @@ async def process_conversation(message: types.Message):
         print(mem)
     await message.reply(res)
 
-    if chat.is_user_win(res):
+    if chat.is_user_win(res, character):
         db.mark_conversation_win(True, character.conversation_id)
         chat.remove_character(message.chat.id)
         await message.answer(WIN_MSG)

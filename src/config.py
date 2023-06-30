@@ -146,3 +146,5 @@ WHITELIST = ['-900954179', '-806439333', '179131415', '-956191169',
 QUOTED_CHATS = {
     '-956191169': 5  #RESPECT_TEST
 }
+# This sets max symbols from user per message
+MAX_SYMBOLS = 120

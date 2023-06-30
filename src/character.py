@@ -1,7 +1,7 @@
 from open_ai import OpenaiHandler
 from random import choice
 
-from config import SECRET_WORDS
+from config import SECRET_WORDS, USER_WRAP, BOT_WRAP
 
 
 class Character:
@@ -19,10 +19,13 @@ class Character:
         self.id = None
 
     def generate_response(self, message_text: str):
-        self.__add_to_memory('user', message_text)
+        half = len(USER_WRAP) // 2
+        tag1, tag2 = USER_WRAP[:half], USER_WRAP[half:]
+
+        self.__add_to_memory('user', f'{tag1}{message_text}{tag2}')
         response = self.ai.get_completion(self.memory)
         self.__add_to_memory('assistant', response)
-        return response
+        return response.strip(f"{BOT_WRAP}")
 
     def __add_to_memory(self, role: str, message_text: str):
         self.memory.append({

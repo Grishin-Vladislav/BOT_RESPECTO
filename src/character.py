@@ -1,11 +1,16 @@
 from open_ai import OpenaiHandler
+from random import choice
+
+from config import SECRET_WORDS
 
 
 class Character:
     def __init__(self, openai_api_key, chat_id, conversation_id):
         self.ai = OpenaiHandler(openai_api_key)
         self.name = self.ai.get_char_name()
-        self.prompt = self.ai.get_initial_prompt(self.name)
+        self.secret_word = self.__get_secret_word()
+        self.prompt = self.ai.get_initial_prompt(self.name,
+                                                 self.secret_word)
         self.memory = [
             {'role': 'system', 'content': self.prompt}
         ]
@@ -25,3 +30,7 @@ class Character:
         })
         if len(self.memory) > 6:
             del self.memory[1:3]
+
+    @staticmethod
+    def __get_secret_word():
+        return choice(SECRET_WORDS)

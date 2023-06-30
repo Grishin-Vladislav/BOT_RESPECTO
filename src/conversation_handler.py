@@ -1,5 +1,5 @@
 from character import Character
-from config import WIN_TRIGGERS, LOSE_TRIGGERS
+from config import LOSE_TRIGGERS
 
 
 class ConversationHandler:
@@ -20,8 +20,8 @@ class ConversationHandler:
             return self.chars[chat_id]
 
     @staticmethod
-    def is_user_win(message):
-        return any(trigger in message.lower() for trigger in WIN_TRIGGERS)
+    def is_user_win(message, character: Character):
+        return character.secret_word in message.lower()
 
     @staticmethod
     def is_user_lost(message):

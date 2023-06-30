@@ -57,11 +57,12 @@ class OpenaiHandler:
         return CHARACTER_PROMPT.replace('_SAMPLE_', shuffled_chars)
 
     @staticmethod
-    def get_initial_prompt(char_name) -> str:
+    def get_initial_prompt(char_name, secret_word) -> str:
         reg = r'{(\w+)}'
         result = INITIAL_PROMPT
         for char in re.findall(reg, INITIAL_PROMPT):
             result = result.replace('{' + char + '}',
                                     choice(
                                         CHARACTERISTICS_SAMPLE[char]))
-        return result.replace('_NAME_', char_name)
+        return result.replace('_NAME_', char_name).replace('_SECRET_WORD_',
+                                                           secret_word)

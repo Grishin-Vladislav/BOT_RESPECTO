@@ -1,5 +1,7 @@
 import logging
 import os
+import time
+import asyncio
 
 from aiogram import Bot, Dispatcher, executor, types
 from dotenv import load_dotenv, find_dotenv
@@ -7,6 +9,9 @@ from dotenv import load_dotenv, find_dotenv
 from config import START_MSG, WIN_MSG, LOSE_MSG, WHITELIST
 from conversation_handler import ConversationHandler
 from alchemy.db_handler import DbHandler
+from middlewares.quota import QuotaMiddleware, quoted
+from middlewares.symbols_limit import SymbolsCapMiddleware, symbols_cap
+from schedule.reset_quota import daily_quota_reset
 
 load_dotenv(find_dotenv())
 
@@ -18,9 +23,11 @@ DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_HOST = os.getenv('DB_HOST')
 DB_PORT = os.getenv('DB_PORT')
 DB_NAME = os.getenv('DB_NAME')
-
-
 DSN = f'postgresql://{DB_ROLE}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+
+# Setting system time
+os.environ['TZ'] = 'Europe/Moscow'
+time.tzset()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -46,7 +53,6 @@ async def send_welcome(message: types.Message):
 @dp.message_handler(commands=['kill'], chat_id=WHITELIST)
 async def kill_character(message: types.Message):
     if chat.get_character(message.chat.id):
-        chat.remove_conversation(message.chat.id)
         chat.remove_character(message.chat.id)
         await message.answer('Ты убил Олега... ffff')
     else:
@@ -56,6 +62,8 @@ async def kill_character(message: types.Message):
 @dp.message_handler(
     lambda msg: msg.reply_to_message.from_user.id == bot.id,
     chat_id=WHITELIST, is_reply=True)
+@quoted
+@symbols_cap
 async def process_conversation(message: types.Message):
     if not chat.is_character_exists(message.chat.id):
         conv_id = db.record_conversation(message.chat.id)
@@ -75,7 +83,7 @@ async def process_conversation(message: types.Message):
         print(mem)
     await message.reply(res)
 
-    if chat.is_user_win(res):
+    if chat.is_user_win(res, character):
         db.mark_conversation_win(True, character.conversation_id)
         chat.remove_character(message.chat.id)
         await message.answer(WIN_MSG)
@@ -88,4 +96,9 @@ async def process_conversation(message: types.Message):
 
 if __name__ == '__main__':
     with DbHandler(DSN) as db:
-        executor.start_polling(dp, skip_updates=True)
+        db.sync_quoted_chats_with_config()
+        dp.middleware.setup(QuotaMiddleware(db))
+        dp.middleware.setup(SymbolsCapMiddleware())
+        loop = asyncio.get_event_loop()
+        loop.create_task(daily_quota_reset(dp, db))
+        executor.start_polling(dp, loop=loop, skip_updates=True)

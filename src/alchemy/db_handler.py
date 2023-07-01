@@ -1,16 +1,21 @@
+from datetime import datetime
+
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy_utils import database_exists, create_database
+
 from alchemy.models import *
 from config import *
-from datetime import datetime
-from sqlalchemy_utils import database_exists, create_database
 
 
 class DbHandler:
     def __init__(self, DSN):
         self.__engine = sqlalchemy.create_engine(DSN)
+
         if not database_exists(self.__engine.url):
             create_database(self.__engine.url)
+            self.__create_tables(self.__engine)
+        else:
             self.__create_tables(self.__engine)
 
         self.__Session = sessionmaker(bind=self.__engine)
@@ -25,7 +30,8 @@ class DbHandler:
             self.__s.close()
 
     def record_conversation(self, chat_id):
-        conv = Conversation(date=datetime.now(), chat_id=chat_id,
+        conv = Conversation(date=datetime.now(),
+                            chat_id=chat_id,
                             temperature=REPLY_TEMP,
                             presence_penalty=REPLY_PRES_PENALTY,
                             frequency_penalty=REPLY_FREQ_PENALTY,
@@ -59,6 +65,42 @@ class DbHandler:
     def mark_conversation_win(self, state: bool, conversation_id):
         conv = self.__s.query(Conversation).filter(
             Conversation.id == conversation_id).update({'win': state})
+        self.commit()
+
+    def get_quota(self, chat_id: int):
+        quota = self.__s.query(Quota).filter(Quota.chat_id == chat_id).first()
+        return quota
+
+    def change_quota(self, chat_id: int, amount: int):
+        quota = self.get_quota(chat_id)
+        quota.remaining = amount
+        self.__s.add(quota)
+        self.commit()
+
+    def create_quoted_chat(self, chat_id: int, quota: int):
+        quota = Quota(chat_id=chat_id, remaining=quota)
+        self.__s.add(quota)
+        self.commit()
+
+    def reset_quota_for_all(self):
+        existing_chats = self.__s.query(Quota).all()
+
+        for chat in existing_chats:
+            if QUOTED_CHATS.get(str(chat.chat_id)):
+                chat.remaining = QUOTED_CHATS[str(chat.chat_id)]
+                self.__s.add(chat)
+
+        self.commit()
+
+    def sync_quoted_chats_with_config(self):
+        existing_chats = self.__s.query(Quota).all()
+
+        for chat in existing_chats:
+            if QUOTED_CHATS.get(str(chat.chat_id)):
+                continue
+
+            self.__s.delete(chat)
+
         self.commit()
 
     def commit(self):

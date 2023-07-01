@@ -50,3 +50,10 @@ class Message(Base):
 
     character = relationship('Character', back_populates='message')
     conversation = relationship('Conversation', back_populates='message')
+
+
+class Quota(Base):
+    __tablename__ = 'quota'
+
+    chat_id = Column(INTEGER, primary_key=True, nullable=False)
+    remaining = Column(INTEGER)

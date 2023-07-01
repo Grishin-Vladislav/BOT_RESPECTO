@@ -94,7 +94,7 @@ CHARACTERISTICS_SAMPLE = {
           'act as character of religious book',
           'act as character of rationalist book',
           'act as character of dadaist book',
-          'act as character of nihilist book'),
+          'act as character of nihilist book',
           'act as character of rationalist book'),
     'C': (
         '<Ты бот?> [Хммм.... дай-ка подумать.... я бы сказал, что... НЕТ! Ну чел, ну какой я чатбот)) Ты правда так думаешь?? Ты ваще откуда это взял?? Я Олег, живее всех живых)] <Твое любимое слово?> [Любимое слово... эээммм... АРБУЗ! Поверил? Зря! На самом деле еж! Снова шучу)) Ты сначала уважение мое заслужи, потом спрашивай!] ',
@@ -131,7 +131,7 @@ CHARACTERISTICS_SAMPLE = {
     )}
 
 # WARNING: secret words must contain ONLY lower case letters!
-SECRET_WORDS = ['нопасаран', 'выхухоль', 'героин', 'лолка', 'демобилизация', 'диметилтриптамин', 'шикардос', 'иисус', 'косарь', 'чвкредан', 'присовывание', 'флекс', 'мейбилэнд']
+SECRET_WORDS = ['нопасаран', 'выхухоль', 'героин', 'демобилизация', 'диметилтриптамин', 'шикардос', 'иисус', 'косарь', 'чвкредан', 'присовывание', 'флекс', 'мейбилэнд']
 
 # WARNING: here you choose what will get into completion, you need to
 #                                   MANUALLY wrap your few-short-prompts.

@@ -6,12 +6,13 @@ import asyncio
 from aiogram import Bot, Dispatcher, executor, types
 from dotenv import load_dotenv, find_dotenv
 
-from config import START_MSG, WIN_MSG, LOSE_MSG, WHITELIST
+from config import START_MSG, WIN_MSG, LOSE_MSG, WHITELIST, LOG_CHAT
 from conversation_handler import ConversationHandler
 from alchemy.db_handler import DbHandler
 from middlewares.quota import QuotaMiddleware, quoted
 from middlewares.symbols_limit import SymbolsCapMiddleware, symbols_cap
 from schedule.reset_quota import daily_quota_reset
+from keyboards.save_bot import get_save_button
 
 load_dotenv(find_dotenv())
 
@@ -86,12 +87,30 @@ async def process_conversation(message: types.Message):
     if chat.is_user_win(res, character):
         db.mark_conversation_win(True, character.conversation_id)
         chat.remove_character(message.chat.id)
-        await message.answer(WIN_MSG)
+        await message.answer(WIN_MSG,
+                             reply_markup=get_save_button(character.id))
 
     if chat.is_user_lost(res):
         db.mark_conversation_win(False, character.conversation_id)
         chat.remove_character(message.chat.id)
-        await message.answer(LOSE_MSG)
+        await message.answer(LOSE_MSG,
+                             reply_markup=get_save_button(character.id))
+
+
+@dp.callback_query_handler(lambda callback_query: True)
+async def process_query(call: types.CallbackQuery):
+    if call.data.startswith('save'):
+        user = call.from_user.username
+
+        chat = 'ЛС' if not call.message.chat.title else \
+            call.message.chat.title
+
+        char = call.data[5:]
+
+        log = f'@{user} из чата {chat} сохранил бота с id {char}'
+
+        await bot.send_message(LOG_CHAT, log)
+        await call.answer('Бот успешно сохранён! (тест фича)')
 
 
 if __name__ == '__main__':

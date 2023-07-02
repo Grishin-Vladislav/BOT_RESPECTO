@@ -110,6 +110,9 @@ async def process_query(call: types.CallbackQuery):
         log = f'@{user} из чата {chat} сохранил бота с id {char}'
 
         await bot.send_message(LOG_CHAT, log)
+        await bot.edit_message_reply_markup(chat_id=call.message.chat.id,
+                                            message_id=call.message.message_id,
+                                            reply_markup=None)
         await call.answer('Бот успешно сохранён! (тест фича)')
 
 

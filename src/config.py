@@ -170,6 +170,8 @@ LOSE_TRIGGERS = ["иди нахуй", "иди на хуй", "иди на х*й",
                  "нахуй иди", "на хуй иди", "на х*й иди", "нах*й иди",
                  "нахуй пошел", "на хуй пошел", "на х*й пошел", "нах*й пошел"]
 
+ANTI_LOSE_TRIGGERS = ['иначе иди', 'иначе нахуй', 'иначе пошел']
+
 # ADMIN STUFF ---
 # WARNING: chat must be in BOTH 'whitelist' and 'quoted_chats'
 #                                               to properly handle quota

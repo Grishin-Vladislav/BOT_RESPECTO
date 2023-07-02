@@ -32,7 +32,7 @@ class QuotaMiddleware(BaseMiddleware):
             self.db.change_quota(chat_id, quota.remaining - 1)
             return
 
-        await message.answer(f'Превышен ежедневный лимит\nКвота: '
+        await message.answer(f'Бот устал.. возвращайся завтра!\nКвота: '
                              f'({quota.remaining}/{QUOTED_CHATS[str(chat_id)]})')
         raise CancelHandler
 

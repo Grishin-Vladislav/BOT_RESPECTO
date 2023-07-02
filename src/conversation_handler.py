@@ -1,5 +1,5 @@
 from character import Character
-from config import LOSE_TRIGGERS
+from config import LOSE_TRIGGERS, ANTI_LOSE_TRIGGERS
 
 
 class ConversationHandler:
@@ -25,7 +25,12 @@ class ConversationHandler:
 
     @staticmethod
     def is_user_lost(message):
-        return any(trigger in message.lower() for trigger in LOSE_TRIGGERS)
+        triggered_lose = any(
+            trigger in message.lower() for trigger in LOSE_TRIGGERS)
+        triggered_anti_lose = any(
+            trigger in message.lower() for trigger in ANTI_LOSE_TRIGGERS)
+
+        return triggered_lose and not triggered_anti_lose
 
     def is_character_exists(self, chat_id):
         return chat_id in self.chars

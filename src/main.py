@@ -40,7 +40,7 @@ chat = ConversationHandler(OPENAI_API_KEY)
 
 @dp.message_handler(commands=['start'], chat_id=WHITELIST)
 async def send_welcome(message: types.Message):
-    await message.answer(START_MSG)
+    await message.answer(START_MSG, parse_mode="HTML")
 
 
 @dp.message_handler(commands=['start'])

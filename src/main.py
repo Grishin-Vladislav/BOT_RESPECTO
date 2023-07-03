@@ -6,7 +6,8 @@ import asyncio
 from aiogram import Bot, Dispatcher, executor, types
 from dotenv import load_dotenv, find_dotenv
 
-from config import START_MSG, WIN_MSG, LOSE_MSG, WHITELIST, LOG_CHAT
+from config import START_MSG, WIN_MSG, LOSE_MSG, WHITELIST, LOG_CHAT, \
+    QUOTED_CHATS
 from conversation_handler import ConversationHandler
 from alchemy.db_handler import DbHandler
 from middlewares.quota import QuotaMiddleware, quoted
@@ -58,6 +59,21 @@ async def kill_character(message: types.Message):
         await message.answer('Ты убил Олега... ffff')
     else:
         await message.answer('Убивать некого\n¯\_(ツ)_/¯')
+
+
+@dp.message_handler(commands=['whereami'])
+async def send_chat_id(message: types.Message):
+    await message.answer(f'your chat id:\n{message.chat.id}')
+
+
+@dp.message_handler(commands=['quota'])
+async def send_remaining_quota(message: types.Message):
+    quota = db.get_quota(message.chat.id)
+    if not quota:
+        await message.answer('chat is unlimited')
+    else:
+        total = QUOTED_CHATS[message.chat.id]
+        await message.answer(f'Quota {quota}/{total}')
 
 
 @dp.message_handler(

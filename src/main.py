@@ -63,7 +63,8 @@ async def kill_character(message: types.Message):
 
 @dp.message_handler(commands=['whereami'])
 async def send_chat_id(message: types.Message):
-    await message.answer(f'your chat id:\n{message.chat.id}')
+    await message.answer(f'your chat id:\n<b>{message.chat.id}</b>',
+                         parse_mode='HTML')
 
 
 @dp.message_handler(commands=['quota'])
@@ -72,8 +73,8 @@ async def send_remaining_quota(message: types.Message):
     if not quota:
         await message.answer('chat is unlimited')
     else:
-        total = QUOTED_CHATS[message.chat.id]
-        await message.answer(f'Quota {quota}/{total}')
+        total = QUOTED_CHATS[str(message.chat.id)]
+        await message.answer(f'Quota {quota.remaining}/{total}')
 
 
 @dp.message_handler(

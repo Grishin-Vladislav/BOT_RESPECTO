@@ -183,7 +183,8 @@ WHITELIST = ['-900954179', '-806439333', '179131415', '-956191169',
              '-826765698', '130594380']
 # {'X': Y, 'X': Y} where X = chat_id, Y = daily quota
 QUOTED_CHATS = {
-    '-900954179': 75  # BOT RESPECT
+    '-900954179': 75,  # BOT RESPECT
+    '-956191169': 1000000  # RESPECT_TEST
 }
 # This sets max symbols from user per message
 MAX_SYMBOLS = 180

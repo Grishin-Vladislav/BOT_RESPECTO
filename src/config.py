@@ -180,11 +180,14 @@ ANTI_LOSE_TRIGGERS = ['иначе иди', 'иначе нахуй', 'иначе 
 # WARNING: chat must be in BOTH 'whitelist' and 'quoted_chats'
 #                                               to properly handle quota
 WHITELIST = ['-900954179', '-806439333', '179131415', '-956191169',
-             '-826765698', '130594380']
+             '-826765698', '130594380', '-921678605', '-952271302', '-963568054']
 # {'X': Y, 'X': Y} where X = chat_id, Y = daily quota
 QUOTED_CHATS = {
     '-900954179': 75,  # BOT RESPECT
-    '-956191169': 1000000  # RESPECT_TEST
+    '-956191169': 1000000,  # RESPECT_TEST
+    '-921678605': 75, #German
+    '-952271302': 75, #Kate
+    '-963568054': 75 #Nekit
 }
 # This sets max symbols from user per message
 MAX_SYMBOLS = 180

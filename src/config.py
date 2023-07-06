@@ -185,9 +185,9 @@ WHITELIST = ['-900954179', '-806439333', '179131415', '-956191169',
 QUOTED_CHATS = {
     '-900954179': 75,  # BOT RESPECT
     '-956191169': 1000000,  # RESPECT_TEST
-    '-921678605': 75, #German
-    '-952271302': 75, #Kate
-    '-963568054': 75 #Nekit
+    '-921678605': 150, #German
+    '-952271302': 150, #Kate
+    '-963568054': 150 #Nekit
 }
 # This sets max symbols from user per message
 MAX_SYMBOLS = 180

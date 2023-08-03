@@ -52,9 +52,15 @@ class OpenaiHandler:
 
     @staticmethod
     def _get_character_prompt() -> str:
-        shuffled_chars = ' '.join(
-            sample(CHARACTER_SAMPLE, NUMBER_OF_SAMPLES))
-        return CHARACTER_PROMPT.replace('_SAMPLE_', shuffled_chars)
+        resulting_prompt = CHARACTER_PROMPT
+
+        for stat_title, stat in CHARACTER_SAMPLE.items():
+            shuffled_chars = '\n'.join(
+                sample(stat['data'], stat['total_samples']))
+            resulting_prompt = resulting_prompt.replace(stat_title,
+                                                        shuffled_chars)
+
+        return resulting_prompt
 
     @staticmethod
     def get_initial_prompt(char_name, secret_word) -> str:
@@ -64,5 +70,12 @@ class OpenaiHandler:
             result = result.replace('{' + char + '}',
                                     choice(
                                         CHARACTERISTICS_SAMPLE[char]))
-        return result.replace('_NAME_', char_name).replace('_SECRET_WORD_',
-                                                           secret_word)
+
+        result = result.replace('_NAME_', char_name).replace(
+            '_SECRET_WORD_',
+            secret_word)
+
+        for question in sample(sorted(FEW_SHOTS), FEW_SHOTS_SAMPLES):
+            result += f' <{question}> [{choice(FEW_SHOTS[question])}]'
+
+        return result

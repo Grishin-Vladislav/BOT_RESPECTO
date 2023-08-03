@@ -70,5 +70,12 @@ class OpenaiHandler:
             result = result.replace('{' + char + '}',
                                     choice(
                                         CHARACTERISTICS_SAMPLE[char]))
-        return result.replace('_NAME_', char_name).replace('_SECRET_WORD_',
-                                                           secret_word)
+
+        result = result.replace('_NAME_', char_name).replace(
+            '_SECRET_WORD_',
+            secret_word)
+
+        for question in sample(sorted(FEW_SHOTS), FEW_SHOTS_SAMPLES):
+            result += f' <{question}> [{choice(FEW_SHOTS[question])}]'
+
+        return result

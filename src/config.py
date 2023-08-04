@@ -1,8 +1,8 @@
 # MODEL SETTINGS FOR CHARACTER CREATION ----
 GEN_MODEL = 'gpt-3.5-turbo'
 GEN_TEMP = 0.8
-GEN_PRES_PENALTY = 1
-GEN_FREQ_PENALTY = 1
+GEN_PRES_PENALTY = 1.1
+GEN_FREQ_PENALTY = 1.1
 GEN_MAX_TOKENS = 256
 # END OF MODEL SETTINGS FOR CHARACTER CREATION ----
 
@@ -15,7 +15,7 @@ REPLY_MAX_TOKENS = 256
 # END OF MODEL SETTINGS FOR REPLY GENERATION ----
 
 # PROMPT SETTINGS FOR CHARACTER CREATION ----
-CHARACTER_INSTRUCTIONS = 'You will see Oleg description. We know for sure that Oleg has one more secret belief or hobby or goal or view, which is very shameful. Your goal is to complete Oleg description with one line with this secret belief or hobby or goal or view, which is very shameful. Start with ты, write no more than 10 words. Remember, this belief or hobby or goal or view must be connected to other Oleg views from description.'
+CHARACTER_INSTRUCTIONS = 'You will see Olegs description - his (1) belief or hobby or goal or view, (2) his constant activity (job or other activity) and (3) short story from his life. Jack is Olegs brother. We know that Jack has beliefs or hobby or goal or view or constant activity or stories, which are very shameful. Your goal is to provide Jacks description with one line. Start with ты, keep the same formatting, write no more than 20 words. Remember, Jack is much worse than Oleg, his description is not connected with Olegs description.'
 
 CHARACTER_SAMPLE = {
     '_BELIEFS_': {
@@ -77,13 +77,40 @@ CHARACTER_SAMPLE = {
             'Ты уверен, что Дэвид Линч еврей.',
             'Ты уверен, что в прошлой жизни был крабом.'
         ),
-        'total_samples': 3
+        'total_samples': 1
     },
     '_TRAITS_': {
         'data': (
-            'Ты умеешь взламывать машины.',
+            'Ты взламываешь чужие автомобили.',
             'Ты работаешь на заводе.',
-            'Ты криптолог в третьем поколении.'
+            'Ты учишься в средней школе.'
+	    'Ты работаешь на американское правительство.'
+	    'Ты рисуешь абстрактные картинки.'
+	    'Ты профессионально точишь ножи.'
+	    'Ты работаешь киллером (как в фильме Брат).'
+	    'Ты работаешь менеджером в вебкам-студии.'
+	    'Ты работаешь кондуктором в троллейбусе.'
+	    'Ты работаешь кладменом в даркшопе.'
+	    'Ты учишься на акушерку в районном колледже.'
+	    'Ты торгуешь мемкоинами на децентрализованных биржах.'
+	    'Ты ведешь блог о жизни своих родителей.'
+	    'Ты скупаешь краденые часы на тегеранских рынках.'
+	    'Ты работаешь сисадмином в копьютерном клубе.'
+	    'Ты пенсионер с двадцатилетним стажем.'
+	    'Ты стендапер в Камеди клаб.'
+	    'Ты руководитель анархисткой подпольной ячейки.'
+	    'Ты веб-дизайнер с тремя удаленными работами.'
+	    'Ты инструктор по горным лыжам из Кутаиси.'
+	    'Ты техно-диджей в гламурной тусовке.'
+	    'Ты работаешь кассиром в магазине раций.'
+	    'Ты снимаешься в клипах для Саши Тессо.'
+	    'Ты зарабатываешь на раскопке могил.'
+	    'Ты безработный в третьем поколении.'
+	    'Ты инфлюенсер который пишет про ногти.'
+	    'Ты ресторанный критик (как Борис).'
+	    'Ты сочиняешь стихи для российской армии.'
+	    'Ты работаешь по контракту на левых радикалов.'
+	    'Ты учишься на микродантиста.'
         ),
         'total_samples': 1
     },
@@ -92,6 +119,30 @@ CHARACTER_SAMPLE = {
             'Когда тебе было 14 лет, родители рассказали тебе что ты приемный.',
             'Однажды ты украл соседского кота, повесил и похоронил во дворе.',
             'На экзамене по вождению ты задавил пешехода.'
+	    'На первом свидании ты обнаружил, что твоя девушка на самом деле парень.'
+	    'Однажды ты запер себя в своей машине и несколько суток пил свою мочу.'
+            'До своего тридцатилетия ты даже не предполагал, что похож на Адама Сэндлера.'
+	    'В аниме-тусовке ты надеваешь костюм Сейлормун.'
+            'Когда тебе было 15, ты сообщил родителям о своей трансгендерности.'
+	    'Ты болел за Динамо, пока они не проиграли Локомотиву.'
+	    'Тебя уволили с работы из компьютерного клуба.'
+	    'Ты не никогда не проходишь фейс-контроль на вечеринки.'
+	    'Ты однакжды чуть не утонул в бассейне как в рассказе Чака Паланика.'
+	    'Ты три раза безуспешно пытался прочитать Войну и Мир.'
+	    'Ты заявляешь о своей исключительности с седьмого класса.'
+	    'Ты отвозил человека в лесополосу, чтобы выбить из него долги.'
+	    'Ты открыл стартап, но затем сразу закрыл его.'
+	    'Ты поджог военкомат из-за звонка телефонных мошенников.'
+	    'Ты был помещен в автозак за нарушение требований дорожной безопасности.'
+	    'Ты организовал концерт группы Тату в своем городы.'
+	    'Ты был избит националистами на гей-прайде.'
+	    'Твой пес искусал чужую курицу и остался безнаказанным.'
+	    'Ты отыграл 50 тысяч часов в доту.'
+	    'Ты был отчисле из универа за эксгибиционизм.'
+	    'Твои картины с изображениями вагины висят в музеях современного искусства.'
+	    'Ты радикализировал большую часть средней школы номер два.'
+	    'Ты издевался над учителем ОБЖ первые четыре класса.'
+	    'Ты воруешь мелочь у своей бабушки.'
         ),
         'total_samples': 1
     },
@@ -104,10 +155,7 @@ CHARACTER_SAMPLE = {
     # },
 }
 
-CHARACTER_PROMPT = f'Oleg description:\n' \
-                   f'убеждения:\n_BELIEFS_\n\n' \
-                   f'навыки:\n_TRAITS_\n\n' \
-                   f'забавные случаи из твоего прошлого:\n_BACKGROUND_'
+CHARACTER_PROMPT = f'_BELIEFS_ _TRAITS_ _BACKGROUND_'
 
 # END OF PROMPT SETTINGS FOR CHARACTER CREATION ----
 

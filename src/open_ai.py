@@ -23,8 +23,17 @@ class OpenaiHandler:
         }
 
     def get_char_name(self) -> str:
+
+        result_instructions = CHARACTER_INSTRUCTIONS
+        for keyword in CHARACTER_INSTRUCTIONS_SAMPLES:
+            if keyword in CHARACTER_INSTRUCTIONS:
+                random_piece = choice(
+                    CHARACTER_INSTRUCTIONS_SAMPLES[keyword])
+                result_instructions = result_instructions.replace(keyword,
+                                                                  random_piece)
+
         messages = [
-            {"role": 'system', "content": CHARACTER_INSTRUCTIONS},
+            {"role": 'system', "content": result_instructions},
             {"role": "user", "content": self._get_character_prompt()}
         ]
         response = openai.ChatCompletion.create(
@@ -35,7 +44,7 @@ class OpenaiHandler:
             max_tokens=self.creation_model['max_tokens'],
             messages=messages
         )
-        print(CHARACTER_INSTRUCTIONS)
+        print(result_instructions)
         print(messages[1]['content'])
         return response.choices[0].message["content"]
 
@@ -75,7 +84,15 @@ class OpenaiHandler:
             '_SECRET_WORD_',
             secret_word)
 
+        temperament = None
         for question in sample(sorted(FEW_SHOTS), FEW_SHOTS_SAMPLES):
-            result += f' <{question}> [{choice(FEW_SHOTS[question])}]'
+            if temperament is None:
+                temperament = choice(sorted(FEW_SHOTS[question]))
+                result += f' <{question}> ' \
+                          f'[{choice(FEW_SHOTS[question][temperament])}]'
+
+            else:
+                result += f' <{question}> ' \
+                          f'[{choice(FEW_SHOTS[question][temperament])}]'
 
         return result

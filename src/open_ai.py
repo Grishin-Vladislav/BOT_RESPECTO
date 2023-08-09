@@ -1,7 +1,12 @@
-import openai
-from config import *
-from random import sample, choice
 import re
+from random import sample, choice
+
+import openai
+
+try:
+    from .config import *
+except ImportError:
+    from config import *
 
 
 class OpenaiHandler:
@@ -24,17 +29,12 @@ class OpenaiHandler:
 
     def get_char_name(self) -> str:
 
-        result_instructions = CHARACTER_INSTRUCTIONS
-        for keyword in CHARACTER_INSTRUCTIONS_SAMPLES:
-            if keyword in CHARACTER_INSTRUCTIONS:
-                random_piece = choice(
-                    CHARACTER_INSTRUCTIONS_SAMPLES[keyword])
-                result_instructions = result_instructions.replace(keyword,
-                                                                  random_piece)
+        instructions = self.get_character_instructions()
+        character_prompt = self._get_character_prompt()
 
         messages = [
-            {"role": 'system', "content": result_instructions},
-            {"role": "user", "content": self._get_character_prompt()}
+            {"role": 'system', "content": instructions},
+            {"role": "user", "content": character_prompt}
         ]
         response = openai.ChatCompletion.create(
             model=self.creation_model['model'],
@@ -44,7 +44,7 @@ class OpenaiHandler:
             max_tokens=self.creation_model['max_tokens'],
             messages=messages
         )
-        print(result_instructions)
+        print(instructions)
         print(messages[1]['content'])
         return response.choices[0].message["content"]
 
@@ -96,3 +96,15 @@ class OpenaiHandler:
                           f'[{choice(FEW_SHOTS[question][temperament])}]'
 
         return result
+
+    @staticmethod
+    def get_character_instructions():
+        result_instructions = CHARACTER_INSTRUCTIONS
+        for keyword in CHARACTER_INSTRUCTIONS_SAMPLES:
+            if keyword in CHARACTER_INSTRUCTIONS:
+                random_piece = choice(
+                    CHARACTER_INSTRUCTIONS_SAMPLES[keyword])
+                result_instructions = result_instructions.replace(keyword,
+                                                                  random_piece)
+
+        return result_instructions

@@ -15,7 +15,7 @@ REPLY_MAX_TOKENS = 256
 # END OF MODEL SETTINGS FOR REPLY GENERATION ----
 
 # PROMPT SETTINGS FOR CHARACTER CREATION ----
-CHARACTER_INSTRUCTIONS = "Its John description - his (1) belief or hobby or goal or view and (2) his constant activity (job or other activity). Jack is Johns _RELATIONS_. Jack has (1) beliefs or hobby or goal or view and (2) constant activity, which are very shameful. Your goal is to provide Jacks description with one line. Start with ты, keep the same formatting, write no more than 15 words. Two sentences are needed. Remember, Jack is _COMPARISON_ John, his description is not connected to John description."
+CHARACTER_INSTRUCTIONS = "Its John description - his (1) belief or goal or view and (2) his activity (job or other activity). Jack is Johns _RELATIONS_ and has (1) belief or goal or view and (2) activity, which are very _OP_. Your goal is to provide Jacks description with one line. Start with ты, keep the same formatting, write no more than 18 words, dont talk about socks. Two sentences are needed. Remember, Jack is _COMPARISON_ John, his description is not connected to John."
 
 CHARACTER_INSTRUCTIONS_SAMPLES = {
     '_COMPARISON_': (
@@ -23,6 +23,15 @@ CHARACTER_INSTRUCTIONS_SAMPLES = {
         'much worse than',
         'opposite of',
         'much weirder than'
+    ),
+    '_OP_': (
+        'shameful',
+        'weird',
+        'quirky',
+        'odd',
+        'bizzare',
+        'infamous',
+        'disreputable'
     ),
     '_RELATIONS_': (
         'brother',

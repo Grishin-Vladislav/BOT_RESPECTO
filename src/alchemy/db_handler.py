@@ -71,6 +71,11 @@ class DbHandler:
         quota = self.__s.query(Quota).filter(Quota.chat_id == chat_id).first()
         return quota
 
+    def get_all_chats(self):
+        all_chats_objects = self.__s.query(Quota).all()
+        all_chats = [chat.chat_id for chat in all_chats_objects]
+        return all_chats
+
     def change_quota(self, chat_id: int, amount: int):
         quota = self.get_quota(chat_id)
         quota.remaining = amount
@@ -83,25 +88,36 @@ class DbHandler:
         self.commit()
 
     def reset_quota_for_all(self):
-        existing_chats = self.__s.query(Quota).all()
+        all_chats = self.__s.query(Quota).all()
 
-        for chat in existing_chats:
-            if QUOTED_CHATS.get(str(chat.chat_id)):
-                chat.remaining = QUOTED_CHATS[str(chat.chat_id)]
-                self.__s.add(chat)
+        for chat in all_chats:
+            if PREMIUM.get(str(chat.chat_id)):
+                chat.remaining = PREMIUM[str(chat.chat_id)]
+            else:
+                chat.remaining = REGULAR_DAILY_QUOTA
+            self.__s.add(chat)
+
+        self.commit()
+
+    def remove_inactive_chats(self, kicked):
+        query = self.__s.query(Quota).filter(Quota.chat_id.in_(kicked))
+        inactive = query.all()
+
+        for quota in inactive:
+            self.__s.delete(quota)
 
         self.commit()
 
-    def sync_quoted_chats_with_config(self):
-        existing_chats = self.__s.query(Quota).all()
-
-        for chat in existing_chats:
-            if QUOTED_CHATS.get(str(chat.chat_id)):
-                continue
-
-            self.__s.delete(chat)
-
-        self.commit()
+    # def sync_quoted_chats_with_config(self):
+    #     all_chats = self.__s.query(Quota).all()
+    #
+    #     for chat in all_chats:
+    #         if QUOTED_CHATS.get(str(chat.chat_id)):
+    #             continue
+    #
+    #         self.__s.delete(chat)
+    #
+    #     self.commit()
 
     def commit(self):
         try:

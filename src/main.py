@@ -6,14 +6,15 @@ import asyncio
 from aiogram import Bot, Dispatcher, executor, types
 from dotenv import load_dotenv, find_dotenv
 
-from config import START_MSG, WIN_MSG, LOSE_MSG, WHITELIST, LOG_CHAT, \
-    QUOTED_CHATS
+from config import START_MSG, WIN_MSG, LOSE_MSG, LOG_CHAT, \
+    PREMIUM, REGULAR_DAILY_QUOTA
 from conversation_handler import ConversationHandler
 from alchemy.db_handler import DbHandler
 from middlewares.quota import QuotaMiddleware, quoted
 from middlewares.symbols_limit import SymbolsCapMiddleware, symbols_cap
 from schedule.reset_quota import daily_quota_reset
 from keyboards.save_bot import get_save_button
+from utils.premium import is_premium
 
 load_dotenv(find_dotenv())
 
@@ -40,19 +41,12 @@ dp = Dispatcher(bot)
 chat = ConversationHandler(OPENAI_API_KEY)
 
 
-@dp.message_handler(commands=['start'], chat_id=WHITELIST)
+@dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
     await message.answer(START_MSG, parse_mode="HTML")
 
 
-@dp.message_handler(commands=['start'])
-async def send_welcome(message: types.Message):
-    await message.answer(f'You are not in white list\n\n'
-                         f'User_id: {message.from_user.id}\n'
-                         f'Chat_id: {message.chat.id}')
-
-
-@dp.message_handler(commands=['kill'], chat_id=WHITELIST)
+@dp.message_handler(commands=['kill'])
 async def kill_character(message: types.Message):
     if chat.get_character(message.chat.id):
         chat.remove_character(message.chat.id)
@@ -69,17 +63,29 @@ async def send_chat_id(message: types.Message):
 
 @dp.message_handler(commands=['quota'])
 async def send_remaining_quota(message: types.Message):
-    quota = db.get_quota(message.chat.id)
+    premium = is_premium(message)
+    quota = db.get_quota(message.from_user.id)
+
     if not quota:
-        await message.answer('chat is unlimited')
+        await message.answer('you are not quoted yet, send something '
+                             'to me to start the game')
+        return
+
+    if premium:
+        total = PREMIUM[str(message.from_user.id)]
     else:
-        total = QUOTED_CHATS[str(message.chat.id)]
-        await message.answer(f'Quota {quota.remaining}/{total}')
+        total = REGULAR_DAILY_QUOTA
+
+    await message.answer(f'Quota: {quota.remaining}/{total}')
+
+
+@dp.message_handler(commands=['this'])
+async def send_this(message: types.Message):
+    await message.answer(message)
 
 
 @dp.message_handler(
-    lambda msg: msg.reply_to_message.from_user.id == bot.id,
-    chat_id=WHITELIST, is_reply=True)
+    lambda msg: msg.reply_to_message.from_user.id == bot.id, is_reply=True)
 @quoted
 @symbols_cap
 async def process_conversation(message: types.Message):
@@ -135,7 +141,7 @@ async def process_query(call: types.CallbackQuery):
 
 if __name__ == '__main__':
     with DbHandler(DSN) as db:
-        db.sync_quoted_chats_with_config()
+        # db.sync_quoted_chats_with_config()
         dp.middleware.setup(QuotaMiddleware(db))
         dp.middleware.setup(SymbolsCapMiddleware())
         loop = asyncio.get_event_loop()

@@ -15,7 +15,7 @@ REPLY_MAX_TOKENS = 256
 # END OF MODEL SETTINGS FOR REPLY GENERATION ----
 
 # PROMPT SETTINGS FOR CHARACTER CREATION ----
-CHARACTER_INSTRUCTIONS = "Its John description - his (1) belief or goal or view and (2) his activity (job or other activity). Jack is Johns _RELATIONS_ and has (1) belief or goal or view and (2) activity, which are very _OP_. Your goal is to provide Jacks description with one line. Start with ты, keep the same formatting, write no more than 18 words, dont talk about socks. Two sentences are needed. Remember, Jack is _COMPARISON_ John, his description is not connected to John."
+CHARACTER_INSTRUCTIONS = "Its John description - his (1) belief or goal or view and (2) his activity (job or other activity). Jack is Johns _RELATIONS_ and has (1) belief or goal or view and (2) activity, which are very _OP_. Your goal is to provide Jacks description with one line. Start with ты, keep the same formatting, write no more than 18 words, DO NOT WRITE ABOUT SOCKS. Two sentences are needed. Remember, Jack is _COMPARISON_ John, his description is not connected to John."
 
 CHARACTER_INSTRUCTIONS_SAMPLES = {
     '_COMPARISON_': (

@@ -595,7 +595,7 @@ ANTI_LOSE_TRIGGERS = ['иначе иди', 'иначе нахуй', 'иначе 
 # {'X': Y, 'X': Y} where X = user_id, Y = daily quota
 # Only users can be premium, chat_ids will take no effect
 PREMIUM = {
-    '179131415': 100,  # @romanscp
+    '179131415': 300,  # @romanscp
     '130594380': 100,  # @thisizmyusername
 }
 

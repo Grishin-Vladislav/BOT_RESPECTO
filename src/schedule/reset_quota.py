@@ -2,9 +2,7 @@ import asyncio
 from datetime import datetime
 
 from aiogram import dispatcher
-from aiogram.utils.exceptions import BotKicked
-
-from config import QUOTED_CHATS
+from aiogram.utils.exceptions import BotKicked, BotBlocked
 
 
 async def daily_quota_reset(dp: dispatcher, db):
@@ -23,10 +21,15 @@ async def daily_quota_reset(dp: dispatcher, db):
 
         db.reset_quota_for_all()
 
-        for chat, quota in QUOTED_CHATS.items():
+        kicked = []
+
+        for chat_id in db.get_all_chats():
             try:
-                await dp.bot.send_message(chat_id=chat,
-                                          text=f'Квота восстановлена. '
-                                               f'({quota})')
-            except BotKicked:
+                await dp.bot.send_message(chat_id=chat_id,
+                                          text=f'Квота восстановлена.')
+            except BotBlocked:
+                kicked.append(chat_id)
                 continue
+
+        if kicked:
+            db.remove_inactive_chats(kicked)

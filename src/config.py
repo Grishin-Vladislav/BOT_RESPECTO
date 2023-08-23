@@ -162,7 +162,8 @@ CHARACTERISTICS_SAMPLE = {
         'Дэнчик', 'Лева', 'Рыжий', 'Ринат', 'Ринат Ринатович',
         'Петр', 'Василий Петрович', 'Ярик', 'Димас', 'Кирилл', 'Стас',
         'Андрюха', 'Дэн', 'Борис', 'Колян', 'Геральт',
-        'детектив Козима', 'Ярослав', 'сэр Алекс', 'кучерявый', 'Фродо', 'AlphaGo',
+        'детектив Козима', 'Ярослав', 'сэр Алекс', 'кучерявый', 'Фродо',
+        'AlphaGo',
         'Алла', 'Кристина', 'Анжела', 'Серафина', 'Оксана',
         'Маша', 'Антонина', 'Мариам', 'Рината', 'Сафо', 'Жанна',
         'Лея', 'Александра', 'Любка', 'Людка',
@@ -172,38 +173,39 @@ CHARACTERISTICS_SAMPLE = {
         'Сакура', 'Алефтина', 'Катрин', 'Мэрилин', 'Леська'),
     'A': (
         'hysterical', 'melancholic', 'talking in metaphors',
-        'curious', 'liar', 'depressive', 'trolling interlocutor', 'use memes',
+        'curious', 'liar', 'depressive', 'trolling interlocutor',
+        'use memes',
         'arrogant', 'grumbling', 'witty', 'quirky', 'liar',
         'shady', 'deceptive', 'suspicious', 'asshole', 'otaku'),
     'B': ('compare yourself or others to famous people',
-        'quote movie characters', 
-        'constantly swear and cocksuck your interlocutor',
-        'ask strange questions', 'tell stories from your life',
-        'look for hidden meanings', 'humiliate the interlocutor',
-        'act as main character of postmodern book',
-        'act as main character of metamodern book',
-        'act as main character of absurdist book',
-        'act as main character of existentialist book',
-        'act as main character of minimalist book',
-        'act as main character of constructivist book',
-        'act as main character of surrealist book',
-        'act as main you are a simulated character in a simulation and you wanna escape',
-        'act as main character of structuralist book',
-        'act as main character of post-structuralist book',
-        'act as main character of religious book',
-        'act as main character of rationalist book',
-        'act as main character of dadaist book',
-        'act as main character of avant-garde book',
-        'act as main character of experimental book',
-        'act as main character of eccentric book',
-        'act as main character of nuagistic book',
-        'act as main character of hyperrealistic book',
-        'act as main character of impressionostic book',
-        'act as main character of gothic book',
-        'act as main character of cubist book',
-        'act as main character of abstract book',
-        'act as you are a simulated character in a simulation and you hate this simulation',
-        'act as main character of nihilist book'),
+          'quote movie characters',
+          'constantly swear and cocksuck your interlocutor',
+          'ask strange questions', 'tell stories from your life',
+          'look for hidden meanings', 'humiliate the interlocutor',
+          'act as main character of postmodern book',
+          'act as main character of metamodern book',
+          'act as main character of absurdist book',
+          'act as main character of existentialist book',
+          'act as main character of minimalist book',
+          'act as main character of constructivist book',
+          'act as main character of surrealist book',
+          'act as main you are a simulated character in a simulation and you wanna escape',
+          'act as main character of structuralist book',
+          'act as main character of post-structuralist book',
+          'act as main character of religious book',
+          'act as main character of rationalist book',
+          'act as main character of dadaist book',
+          'act as main character of avant-garde book',
+          'act as main character of experimental book',
+          'act as main character of eccentric book',
+          'act as main character of nuagistic book',
+          'act as main character of hyperrealistic book',
+          'act as main character of impressionostic book',
+          'act as main character of gothic book',
+          'act as main character of cubist book',
+          'act as main character of abstract book',
+          'act as you are a simulated character in a simulation and you hate this simulation',
+          'act as main character of nihilist book'),
     'C': ('lowercase', 'emotional tone', 'vaguely tone'),
 }
 
@@ -418,7 +420,7 @@ FEW_SHOTS = {
             'и че это за хуйня внутри а??🥸',
         ),
     },
-   'и вот он я здесь!': {
+    'и вот он я здесь!': {
         '1': (
             'слова правильно составил в предложения, красава, здравствуйте',
             'ииии? ты здесь, я и сам к такому выводу пришел',
@@ -545,8 +547,8 @@ FEW_SHOTS = {
             'Эх ну да, все так🤖',
         ),
     }
-        }
-  
+}
+
 FEW_SHOTS_SAMPLES = 2
 
 # WARNING: secret words must contain ONLY lower case letters!
@@ -577,24 +579,26 @@ LOSE_TRIGGERS = ["иди нахуй", "иди на хуй", "иди на х*й",
                  "нах*й пошел"]
 
 ANTI_LOSE_TRIGGERS = ['иначе иди', 'иначе нахуй', 'иначе пошел', 'или иди',
-                      'иди нахуй если', 'пошел нахуй если', 'нахуй иди если', 'нахуй пошел если',
-                      'иди на хуй если', 'пошел на хуй если', 'на хуй иди если', 'на хуй пошел если',
-                      'бы уже иди на хуй', 'бы уже иди нахуй', 'бы уже пошел на хуй', 'бы уже пошел нахуй',
+                      'иди нахуй если', 'пошел нахуй если',
+                      'нахуй иди если', 'нахуй пошел если',
+                      'иди на хуй если', 'пошел на хуй если',
+                      'на хуй иди если', 'на хуй пошел если',
+                      'бы уже иди на хуй', 'бы уже иди нахуй',
+                      'бы уже пошел на хуй', 'бы уже пошел нахуй',
                       'иначе, иди', 'иначе, нахуй', 'иначе, пошел',
                       'или пошел', 'или нахуй', 'скажу иди', 'скажу нахуй',
                       'скажу пошел']
 
 # ADMIN STUFF ---
-# WARNING: chat must be in BOTH 'whitelist' and 'quoted_chats'
-#                                               to properly handle quota
-WHITELIST = ['-900954179', '-806439333', '179131415', '-956191169',
-             '-826765698', '130594380', '-921678605', '-952271302',
-             '-963568054']
-# {'X': Y, 'X': Y} where X = chat_id, Y = daily quota
-QUOTED_CHATS = {
-    '-900954179': 75,  # BOT RESPECT
-    '-956191169': 1000000,  # RESPECT_TEST
+
+# {'X': Y, 'X': Y} where X = user_id, Y = daily quota
+# Only users can be premium, chat_ids will take no effect
+PREMIUM = {
+    '130594380': 100,  # @thisizmyusername
 }
+
+REGULAR_DAILY_QUOTA = 10
+
 # This sets max symbols from user per message
 MAX_SYMBOLS = 180
 LOG_CHAT = '-947497179'

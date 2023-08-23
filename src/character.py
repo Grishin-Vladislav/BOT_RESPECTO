@@ -34,6 +34,8 @@ class Character:
         except IndexError:
             result = response.strip(f'{tag3}{tag4}')
 
+        result = result.strip(f'{tag1}{tag2}')
+
         return result
 
     def __add_to_memory(self, role: str, message_text: str):

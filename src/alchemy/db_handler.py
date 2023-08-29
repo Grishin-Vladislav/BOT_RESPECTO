@@ -108,16 +108,22 @@ class DbHandler:
 
         self.commit()
 
-    # def sync_quoted_chats_with_config(self):
-    #     all_chats = self.__s.query(Quota).all()
-    #
-    #     for chat in all_chats:
-    #         if QUOTED_CHATS.get(str(chat.chat_id)):
-    #             continue
-    #
-    #         self.__s.delete(chat)
-    #
-    #     self.commit()
+    def write_to_event_register(self, user_id, username, date):
+        record = EventRegister(
+            user_id=user_id,
+            user_name=username,
+            date=date
+        )
+        self.__s.add(record)
+        self.commit()
+
+    def is_already_registered(self, user_id):
+        q = self.__s.query(EventRegister).filter(
+            EventRegister.user_id == user_id).first()
+
+        if q:
+            return True
+        return False
 
     def commit(self):
         try:

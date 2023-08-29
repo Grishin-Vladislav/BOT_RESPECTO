@@ -43,8 +43,10 @@ class Message(Base):
     __tablename__ = 'message'
 
     id = Column(BIGINT, primary_key=True, autoincrement=True)
-    character_id = Column(BIGINT, ForeignKey('character.id'), nullable=False)
-    conversation_id = Column(BIGINT, ForeignKey('conversation.id'), nullable=False)
+    character_id = Column(BIGINT, ForeignKey('character.id'),
+                          nullable=False)
+    conversation_id = Column(BIGINT, ForeignKey('conversation.id'),
+                             nullable=False)
     user = Column(BOOLEAN, nullable=False)
     text = Column(Text)
 
@@ -57,3 +59,12 @@ class Quota(Base):
 
     chat_id = Column(INTEGER, primary_key=True, nullable=False)
     remaining = Column(INTEGER)
+
+
+class EventRegister(Base):
+    __tablename__ = 'event_register'
+
+    id = Column(BIGINT, primary_key=True, autoincrement=True)
+    user_id = Column(BIGINT, nullable=False)
+    user_name = Column(VARCHAR, nullable=True)
+    date = Column(TIMESTAMP)

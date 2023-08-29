@@ -2,6 +2,8 @@ import logging
 import os
 import time
 import asyncio
+import json
+from pathlib import Path
 
 from aiogram import Bot, Dispatcher, executor, types
 from dotenv import load_dotenv, find_dotenv
@@ -82,6 +84,33 @@ async def send_remaining_quota(message: types.Message):
 @dp.message_handler(commands=['this'])
 async def send_this(message: types.Message):
     await message.answer(message)
+
+
+@dp.message_handler(commands=['register'])
+async def register(message: types.Message):
+    try:
+        if db.is_already_registered(message.from_user.id):
+            await message.answer('Ты уже зарегистрирован!')
+            return
+
+        else:
+
+            db.write_to_event_register(
+                message.from_user.id,
+                message.from_user.username,
+                message.date
+            )
+
+            await bot.send_message(LOG_CHAT,
+                                   f'{message.from_user.username}'
+                                   f' зарегистрировался с айди '
+                                   f'{message.from_user.id}')
+
+            await message.answer(f'Успех!')
+
+    except Exception as e:
+        logging.error(e)
+        await message.answer(f'Ошибка, попробуйте ещё раз')
 
 
 @dp.message_handler(

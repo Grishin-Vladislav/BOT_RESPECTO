@@ -125,6 +125,11 @@ class DbHandler:
             return True
         return False
 
+    def get_all_event_registered(self):
+        all_chats_objects = self.__s.query(EventRegister).all()
+        all_chats = [chat.user_id for chat in all_chats_objects]
+        return all_chats
+
     def commit(self):
         try:
             self.__s.commit()

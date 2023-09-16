@@ -181,8 +181,14 @@ async def confirm_broadcast(call: types.CallbackQuery, state: FSMContext):
 
     data = await state.get_data()
     content = data['CONTENT']
-    group = 'все юзеры' if data['GROUP'] == 'broadcast_all' \
-        else 'только зарегистрировавшиеся педики'
+
+    group_mapping = {
+        'broadcast_all': 'Ваще всем!',
+        'broadcast_normal': 'Обычным ровным пацанам по квоте',
+        'broadcast_promo': 'Зарегистрированным педикам на игру'
+    }
+
+    group = group_mapping.get(data['GROUP'])
 
     await content.send_copy(call.from_user.id)
 
@@ -209,13 +215,23 @@ async def resolve_broadcast(call: types.CallbackQuery, state: FSMContext):
     else:
         data = await state.get_data()
         content = data['CONTENT']
+        group = data['GROUP']
 
         kicked = []
         unknown = []
         success = []
 
-        users = db.get_all_event_registered() if \
-            data['GROUP'].endswith('promo') else db.get_all_chats()
+        users_raw = []
+
+        if group.endswith('normal') or group.endswith('all'):
+            for user in db.get_all_chats():
+                users_raw.append(user)
+
+        if group.endswith('promo') or group.endswith('all'):
+            for user in db.get_all_event_registered():
+                users_raw.append(user)
+
+        users = list(set(users_raw))
 
         if call.from_user.id in users:
             users.remove(call.from_user.id)

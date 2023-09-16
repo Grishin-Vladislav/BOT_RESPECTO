@@ -3,12 +3,16 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 def get_options():
     keyboard = InlineKeyboardMarkup()
-    everybody = InlineKeyboardButton('ваще всем нахой',
-                                     callback_data=f'broadcast_all')
+    normal = InlineKeyboardButton('обычным пацанам',
+                                     callback_data=f'broadcast_normal')
+
     registered = InlineKeyboardButton('зарегистрировавшимся педикам',
                                       callback_data='broadcast_promo')
 
-    keyboard.add(everybody, registered)
+    everybody = InlineKeyboardButton('ваще всем нахой',
+                                     callback_data='broadcast_all')
+
+    keyboard.add(normal, registered, everybody)
     return keyboard
 
 

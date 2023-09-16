@@ -631,7 +631,7 @@ ANTI_LOSE_TRIGGERS = ['иначе иди', 'иначе нахуй', 'иначе 
 # Only users can be premium, chat_ids will take no effect
 PREMIUM = {
     '179131415': 300,  # @romanscp
-    '253237517': 100, #leha
+    '253237517': 100,  # leha
     '130594380': 100,  # @thisizmyusername
 }
 
@@ -640,3 +640,4 @@ REGULAR_DAILY_QUOTA = 10
 # This sets max symbols from user per message
 MAX_SYMBOLS = 180
 LOG_CHAT = '-947497179'
+ADMINS = ['179131415', '130594380']
